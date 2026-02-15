@@ -8,10 +8,16 @@ exports.register = async (req, res) => {
     try {
         const { username, email, password } = req.body;
 
-        // Check if user already exists
-        const existingUser = await User.findOne({ $or: [{ email }, { username }] });
+        // Only allow the admin email to register
+        const ALLOWED_EMAIL = 'nolstankumwenda@gmail.com';
+        if (email.toLowerCase() !== ALLOWED_EMAIL) {
+            return res.status(403).json({ message: 'Registration is restricted. Access denied.' });
+        }
+
+        // Check if admin already registered
+        const existingUser = await User.findOne({ email: ALLOWED_EMAIL });
         if (existingUser) {
-            return res.status(400).json({ message: 'User with that email or username already exists' });
+            return res.status(400).json({ message: 'Admin account already exists. Please login instead.' });
         }
 
         // Hash password
