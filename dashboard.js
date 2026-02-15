@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            fetch('http://localhost:5000/api/academic/create', {
+            fetch(`${API_BASE_URL}/api/academic/create`, {
                 method: 'POST',
                 body: formData
             })

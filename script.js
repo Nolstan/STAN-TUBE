@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
      */
     const academicContainer = document.getElementById('academic-container');
     if (academicContainer) {
-        fetch('http://localhost:5000/api/academic')
+        fetch(`${API_BASE_URL}/api/academic`)
             .then(response => response.json())
             .then(records => {
                 academicContainer.innerHTML = ''; // Clear loading placeholder
