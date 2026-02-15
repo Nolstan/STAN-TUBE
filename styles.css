@@ -518,8 +518,33 @@ a {
         /* Mobile menu hidden for simple static site, or could implement hamburger */
     }
 
-    /* Simple fallback for mobile nav: just show icons or hide */
+    .card-container {
+        flex-wrap: wrap;
+        overflow-x: hidden;
+        /* Disable horizontal scroll on mobile */
+        padding-right: 4%;
+        /* Match left padding */
+    }
+
+    .card,
+    .video-card {
+        flex: 1 1 calc(50% - 10px);
+        /* Two cards per row */
+        max-width: calc(50% - 10px);
+        /* Ensure it wraps */
+    }
 }
+
+@media (max-width: 480px) {
+
+    .card,
+    .video-card {
+        flex: 1 1 100%;
+        /* Single card per row on very small screens */
+        max-width: 100%;
+    }
+}
+
 
 /* Animations */
 @keyframes fadeUp {
