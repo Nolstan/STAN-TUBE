@@ -206,3 +206,32 @@ button[type="submit"] {
         gap: 0;
     }
 }
+
+.username-display {
+    color: #ccc;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.btn-logout {
+    padding: 6px 14px;
+    background-color: #E50914;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+
+.btn-logout:hover {
+    background-color: #c40812;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}

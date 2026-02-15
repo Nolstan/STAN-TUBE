@@ -2,6 +2,30 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
+    // Auth Guard: Redirect to login if no token
+    const token = localStorage.getItem('token');
+    if (!token) {
+        window.location.href = 'login.html';
+        return;
+    }
+
+    // Display logged-in user
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    const userDisplay = document.getElementById('user-display');
+    if (userDisplay && user.username) {
+        userDisplay.textContent = user.username;
+    }
+
+    // Logout
+    const logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = 'login.html';
+        });
+    }
+
     // Navigation Logic
     const navLinks = document.querySelectorAll('.sidebar-nav a[data-target]');
     const sections = document.querySelectorAll('.form-section');

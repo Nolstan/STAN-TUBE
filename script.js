@@ -179,6 +179,19 @@ document.addEventListener('DOMContentLoaded', () => {
                             </div>
                         </div>
                     `;
+                    // Make card image clickable
+                    if (record.imageUrl) {
+                        const imageDiv = card.querySelector('.card-image-placeholder');
+                        imageDiv.style.cursor = 'pointer';
+                        imageDiv.addEventListener('click', () => {
+                            const imageModal = document.getElementById('imageModal');
+                            const lightboxImg = document.getElementById('lightboxImage');
+                            lightboxImg.src = record.imageUrl;
+                            imageModal.classList.add('active');
+                            document.body.style.overflow = 'hidden';
+                        });
+                    }
+
                     academicContainer.appendChild(card);
                 });
             })
@@ -186,5 +199,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.error('Error fetching academic records:', error);
                 academicContainer.innerHTML = '<div class="error-message">Failed to load academic records.</div>';
             });
+    }
+
+    /**
+     * Image Lightbox Modal Logic
+     */
+    const imageModal = document.getElementById('imageModal');
+    const closeImageBtn = document.getElementById('closeImageModal');
+
+    if (closeImageBtn) {
+        closeImageBtn.addEventListener('click', () => {
+            imageModal.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+    }
+
+    if (imageModal) {
+        imageModal.addEventListener('click', (e) => {
+            if (e.target === imageModal) {
+                imageModal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
     }
 });
