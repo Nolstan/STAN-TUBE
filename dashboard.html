@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stan Tube - Dashboard</title>
+    <!-- Reuse main styles for variables and common elements -->
+    <link rel="stylesheet" href="styles.css">
+    <!-- Dashboard specific styles -->
+    <link rel="stylesheet" href="dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <span class="logo-text">Stan Tube</span>
+                <span class="badge">Admin</span>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="#" class="active" data-target="academic">Academic Records</a></li>
+                    <li><a href="#" data-target="projects">Projects</a></li>
+                    <li><a href="index.html" class="back-link">Back to Site</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <header class="dashboard-header">
+                <h1 id="section-title">Academic Records</h1>
+                <div class="user-profile">
+                    <div class="avatar"></div>
+                </div>
+            </header>
+
+            <!-- Academic Form Section -->
+            <section id="academic-section" class="form-section active">
+                <div class="form-container">
+                    <h2>Add New Record</h2>
+                    <form id="academic-form">
+                        <div class="form-group">
+                            <label for="grade-paper">Picture of Paper / Grade Sheet</label>
+                            <input type="file" id="grade-paper" accept="image/*">
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Subject / Course Name</label>
+                            <input type="text" id="subject" placeholder="e.g. Calculus II" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="grade">Grade (%)</label>
+                                <input type="number" id="grade" placeholder="85" min="0" max="100" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="match">Match Score (%)</label>
+                                <input type="number" id="match" placeholder="98" min="0" max="100">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="year">Year</label>
+                                <input type="number" id="year" placeholder="2023" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="type">Type</label>
+                                <select id="type">
+                                    <option value="assignments">Assignment</option>
+                                    <option value="midsem">Midsem</option>
+                                    <option value="endsem">Endsem</option>
+                                    <option value="quiz">Quiz</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea id="description" rows="3" placeholder="Brief description..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Record</button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Project Form Section -->
+            <section id="projects-section" class="form-section">
+                <div class="form-container">
+                    <h2>Add New Project</h2>
+                    <form id="project-form">
+                        <div class="form-group">
+                            <label for="project-title">Project Title</label>
+                            <input type="text" id="project-title" placeholder="e.g. My Awesome App" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="duration">Duration</label>
+                                <input type="text" id="duration" placeholder="2h 15m">
+                            </div>
+                            <div class="form-group">
+                                <label for="quality">Quality</label>
+                                <select id="quality">
+                                    <option value="HD">HD</option>
+                                    <option value="4K">4K</option>
+                                    <option value="SD">SD</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="category">Category</label>
+                            <select id="category">
+                                <option value="school">School Project</option>
+                                <option value="personal">Personal Project</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="video-url">Video/Demo URL</label>
+                            <input type="url" id="video-url" placeholder="https://youtube.com/...">
+                        </div>
+                        <div class="form-group">
+                            <label for="code-url">Code Repository URL</label>
+                            <input type="url" id="code-url" placeholder="https://github.com/...">
+                        </div>
+                        <div class="form-group">
+                            <label for="project-desc">Description</label>
+                            <textarea id="project-desc" rows="3" placeholder="Project details..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Project</button>
+                    </form>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script src="dashboard.js"></script>
+</body>
+
+</html>

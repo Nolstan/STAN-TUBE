@@ -126,4 +126,65 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     });
+    /**
+     * Fetch and Render Academic Records
+     */
+    const academicContainer = document.getElementById('academic-container');
+    if (academicContainer) {
+        fetch('http://localhost:5000/api/academic')
+            .then(response => response.json())
+            .then(records => {
+                academicContainer.innerHTML = ''; // Clear loading placeholder
+
+                if (records.length === 0) {
+                    academicContainer.innerHTML = '<div class="no-records">No academic records found.</div>';
+                    return;
+                }
+
+                records.forEach(record => {
+                    const card = document.createElement('div');
+                    card.classList.add('card');
+                    card.setAttribute('data-category', record.type);
+
+                    // Determine background gradient based on type or random
+                    const bgClass = 'academic-bg-' + (Math.floor(Math.random() * 3) + 1);
+
+                    // Grade Color
+                    const gradeClass = record.grade >= 50 ? 'grade-pass' : 'grade-fail';
+
+                    // Image Handling
+                    let imageHtml = '';
+                    if (record.imageUrl) {
+                        imageHtml = `<div class="card-image-placeholder" style="background-image: url('${record.imageUrl}'); background-size: cover;">
+                                        <span class="card-grade ${gradeClass}">${record.grade}%</span>
+                                      </div>`;
+                    } else {
+                        imageHtml = `<div class="card-image-placeholder ${bgClass}">
+                                        <span class="card-grade ${gradeClass}">${record.grade}%</span>
+                                      </div>`;
+                    }
+
+                    card.innerHTML = `
+                        ${imageHtml}
+                        <div class="card-info">
+                            <h3>${record.subject}</h3>
+                            <div class="meta-info">
+                                <span class="match-score">${record.matchScore}% Match</span>
+                                <span class="year">${record.year}</span>
+                                <span class="rating">${record.type}</span>
+                            </div>
+                            <p class="desc">${record.description || ''}</p>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar" style="width: ${record.grade}%;"></div>
+                            </div>
+                        </div>
+                    `;
+                    academicContainer.appendChild(card);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching academic records:', error);
+                academicContainer.innerHTML = '<div class="error-message">Failed to load academic records.</div>';
+            });
+    }
 });
