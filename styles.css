@@ -433,6 +433,7 @@ a {
     margin-bottom: 10px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
     flex-grow: 1;
@@ -513,35 +514,41 @@ a {
         font-size: 1.2rem;
     }
 
-    .nav-links, .user-profile {
+    .nav-links,
+    .user-profile {
         display: none;
         /* Mobile menu hidden for simple static site, or could implement hamburger */
     }
 
+    /* Mobile: Enable horizontal scroll (swipe) behavior instead of wrapping */
     .card-container {
-        flex-wrap: wrap;
-        overflow-x: hidden;
-        /* Disable horizontal scroll on mobile */
+        flex-wrap: nowrap;
+        overflow-x: auto;
         padding-right: 4%;
-        /* Match left padding */
+        scroll-snap-type: x mandatory;
+        /* Enable swipe snapping */
+        -webkit-overflow-scrolling: touch;
+        /* Smooth scroll on iOS */
     }
 
     .card,
     .video-card {
-        flex: 1 1 calc(50% - 10px);
-        /* Two cards per row */
-        max-width: calc(50% - 10px);
-        /* Ensure it wraps */
+        flex: 0 0 85%;
+        /* Show part of next card to encourage swipe */
+        max-width: 85%;
+        scroll-snap-align: center;
+        /* Snap cards to center */
+        margin-right: 15px;
     }
 }
 
 @media (max-width: 480px) {
 
+    /* Adjust specific card sizing if needed, but 85% rule above usually works well */
     .card,
     .video-card {
-        flex: 1 1 100%;
-        /* Single card per row on very small screens */
-        max-width: 100%;
+        flex: 0 0 85%;
+        max-width: 85%;
     }
 }
 
@@ -557,4 +564,68 @@ a {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+/* Video Modal */
+.modal-overlay {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-content {
+    position: relative;
+    width: 90%;
+    /* Responsive width */
+    max-width: 800px;
+    background-color: #000;
+    padding: 10px;
+    /* Slight padding around video */
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(229, 9, 20, 0.5);
+    /* Primary color glow */
+}
+
+.close-modal {
+    position: absolute;
+    top: -40px;
+    right: 0;
+    font-size: 2rem;
+    color: #fff;
+    cursor: pointer;
+    transition: color 0.3s;
+    z-index: 2001;
+}
+
+.close-modal:hover {
+    color: var(--primary-color);
+}
+
+.video-container {
+    position: relative;
+    padding-bottom: 56.25%;
+    /* 16:9 Aspect Ratio */
+    height: 0;
+    overflow: hidden;
+    border-radius: 4px;
+}
+
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
