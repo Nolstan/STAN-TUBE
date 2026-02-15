@@ -4,12 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stan Tube - Streaming Style</title>
+    <title>Stan Tube - nolstan-personal space</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-    <!-- Placeholder for icons, might need a real kit or SVGs if this fails -->
-    <!-- Using inline SVGs for icons to avoid dependency issues if kit fails -->
+   
 </head>
 
 <body>
@@ -29,7 +28,7 @@
         </div>
     </nav>
 
-    <!-- Hero Section (Latest Project) -->
+    <!-- Hero Section Latest Project-->
     <header class="hero" id="hero">
         <div class="hero-bg">
             <!-- Conceptual background for hero -->
@@ -91,98 +90,10 @@
                 <button class="filter-pill" data-filter="personal">Personal Projects</button>
             </div>
             <div class="card-container-wrapper">
-                <div class="card-container">
-                    <!-- Project Card 1 -->
-                    <div class="card video-card" data-category="school">
-                        <div class="card-image-placeholder project-bg-1">
-                            <div class="play-icon">
-                                <svg viewBox="0 0 24 24" width="48" height="48" fill="white">
-                                    <path d="M8 5v14l11-7z" />
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="card-info">
-                            <h3>React Native Weather App</h3>
-                            <div class="meta-info">
-                                <span class="duration">2h 15m</span>
-                                <span class="quality">HD</span>
-                            </div>
-                            <p class="desc">Mobile application providing real-time weather forecasts using
-                                OpenWeatherMap API.</p>
-                            <div class="card-actions">
-                                <button class="action-btn" title="View Code"><svg viewBox="0 0 24 24" width="20"
-                                        height="20" fill="currentColor">
-                                        <path
-                                            d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z" />
-                                    </svg></button>
-                                <button class="action-btn" title="Watch Demo"><svg viewBox="0 0 24 24" width="20"
-                                        height="20" fill="currentColor">
-                                        <path d="M8 5v14l11-7z" />
-                                    </svg></button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Project Card 2 -->
-                    <div class="card video-card" data-category="personal">
-                        <div class="card-image-placeholder project-bg-2">
-                            <div class="play-icon">
-                                <svg viewBox="0 0 24 24" width="48" height="48" fill="white">
-                                    <path d="M8 5v14l11-7z" />
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="card-info">
-                            <h3>Personal Finance Tracker</h3>
-                            <div class="meta-info">
-                                <span class="duration">4h 30m</span>
-                                <span class="quality">4K</span>
-                            </div>
-                            <p class="desc">A full-stack web app to track expenses and income with visual charts.</p>
-                            <div class="card-actions">
-                                <button class="action-btn" title="View Code"><svg viewBox="0 0 24 24" width="20"
-                                        height="20" fill="currentColor">
-                                        <path
-                                            d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z" />
-                                    </svg></button>
-                                <button class="action-btn" title="Watch Demo"><svg viewBox="0 0 24 24" width="20"
-                                        height="20" fill="currentColor">
-                                        <path d="M8 5v14l11-7z" />
-                                    </svg></button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Project Card 3 -->
-                    <div class="card video-card" data-category="personal">
-                        <div class="card-image-placeholder project-bg-3">
-                            <div class="play-icon">
-                                <svg viewBox="0 0 24 24" width="48" height="48" fill="white">
-                                    <path d="M8 5v14l11-7z" />
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="card-info">
-                            <h3>AI Chatbot Interface</h3>
-                            <div class="meta-info">
-                                <span class="duration">1h 45m</span>
-                                <span class="quality">HD</span>
-                            </div>
-                            <p class="desc">Frontend interface for an AI chatbot with streaming response support.</p>
-                            <div class="card-actions">
-                                <button class="action-btn" title="View Code"><svg viewBox="0 0 24 24" width="20"
-                                        height="20" fill="currentColor">
-                                        <path
-                                            d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z" />
-                                    </svg></button>
-                                <button class="action-btn" title="Watch Demo"><svg viewBox="0 0 24 24" width="20"
-                                        height="20" fill="currentColor">
-                                        <path d="M8 5v14l11-7z" />
-                                    </svg></button>
-                            </div>
-                        </div>
-                    </div>
+                <div class="card-container" id="projects-container">
+                    <!-- Dynamic Projects will be loaded here -->
                 </div>
+            </div>
             </div>
         </section>
     </main>

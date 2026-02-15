@@ -84,19 +84,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
             fetch(`${API_BASE_URL}/api/academic/create`, {
                 method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
                 body: formData
             })
                 .then(response => response.json())
                 .then(data => {
                     if (data.message === 'Academic Record created successfully') {
-                        alert('Success: ' + data.message);
+                        alert('Academic Record Added Successfully!');
                         academicForm.reset();
                     } else {
-                        alert('Error: ' + (data.message || 'Unknown error'));
+                        alert(`Error: ${data.message}`);
                     }
                 })
-                .catch(error => {
-                    console.error('Error:', error);
+                .catch(err => {
+                    console.error('Fetch error:', err);
                     alert('An error occurred. Check console.');
                 });
         });
@@ -105,10 +108,40 @@ document.addEventListener('DOMContentLoaded', () => {
     if (projectForm) {
         projectForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            const title = document.getElementById('project-title').value;
+            const formData = new FormData();
+            formData.append('title', document.getElementById('project-title').value);
+            formData.append('duration', document.getElementById('duration').value);
+            formData.append('quality', document.getElementById('quality').value);
+            formData.append('category', document.getElementById('category').value);
+            formData.append('videoUrl', document.getElementById('video-url').value);
+            formData.append('codeUrl', document.getElementById('code-url').value);
+            formData.append('description', document.getElementById('project-desc').value);
 
-            alert(`Project Added:\nTitle: ${title}`);
-            projectForm.reset();
+            const projectImage = document.getElementById('project-image');
+            if (projectImage && projectImage.files.length > 0) {
+                formData.append('project-image', projectImage.files[0]);
+            }
+
+            fetch(`${API_BASE_URL}/api/projects/create`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message === 'Project created successfully') {
+                        alert('Project Added Successfully!');
+                        projectForm.reset();
+                    } else {
+                        alert(`Error: ${data.message}`);
+                    }
+                })
+                .catch(err => {
+                    console.error('Fetch error:', err);
+                    alert('An error occurred. Check console.');
+                });
         });
     }
 });

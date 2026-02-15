@@ -202,6 +202,107 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
+     * Fetch and Render Projects
+     */
+    const projectsContainer = document.getElementById('projects-container');
+    if (projectsContainer) {
+        fetch(`${API_BASE_URL}/api/projects`)
+            .then(response => response.json())
+            .then(projects => {
+                projectsContainer.innerHTML = ''; // Clear placeholder
+
+                if (projects.length === 0) {
+                    projectsContainer.innerHTML = '<div class="no-records">No projects found.</div>';
+                    return;
+                }
+
+                projects.forEach(project => {
+                    const card = document.createElement('div');
+                    card.classList.add('card', 'video-card');
+                    card.setAttribute('data-category', project.category);
+
+                    // Image/Placeholder Handling
+                    let imageHtml = '';
+                    if (project.imageUrl) {
+                        imageHtml = `
+                            <div class="card-image-placeholder" style="background-image: url('${project.imageUrl}'); background-size: cover;">
+                                <div class="play-icon">
+                                    <svg viewBox="0 0 24 24" width="48" height="48" fill="white">
+                                        <path d="M8 5v14l11-7z" />
+                                    </svg>
+                                </div>
+                            </div>`;
+                    } else {
+                        const bgClass = 'project-bg-' + (Math.floor(Math.random() * 3) + 1);
+                        imageHtml = `
+                            <div class="card-image-placeholder ${bgClass}">
+                                <div class="play-icon">
+                                    <svg viewBox="0 0 24 24" width="48" height="48" fill="white">
+                                        <path d="M8 5v14l11-7z" />
+                                    </svg>
+                                </div>
+                            </div>`;
+                    }
+
+                    card.innerHTML = `
+                        ${imageHtml}
+                        <div class="card-info">
+                            <h3>${project.title}</h3>
+                            <div class="meta-info">
+                                <span class="duration">${project.duration || ''}</span>
+                                <span class="quality">${project.quality || 'HD'}</span>
+                            </div>
+                            <p class="desc">${project.description || ''}</p>
+                            <div class="card-actions">
+                                ${project.codeUrl ? `
+                                <button class="action-btn" title="View Code" onclick="window.open('${project.codeUrl}', '_blank')">
+                                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                                        <path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z" />
+                                    </svg>
+                                </button>` : ''}
+                                ${project.videoUrl ? `
+                                <button class="action-btn watch-demo-btn" title="Watch Demo" data-video="${project.videoUrl}">
+                                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                                        <path d="M8 5v14l11-7z" />
+                                    </svg>
+                                </button>` : ''}
+                            </div>
+                        </div>
+                    `;
+
+                    // Watch Demo Button Logic (reuse existing modal logic if any)
+                    const demoBtn = card.querySelector('.watch-demo-btn');
+                    if (demoBtn) {
+                        demoBtn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            const videoUrl = demoBtn.getAttribute('data-video');
+                            const videoModal = document.getElementById('videoModal');
+                            const videoPlayer = document.getElementById('videoPlayer');
+
+                            // Handle YouTube links conversion to embed if necessary
+                            let embedUrl = videoUrl;
+                            if (videoUrl.includes('youtube.com/watch?v=')) {
+                                embedUrl = videoUrl.replace('watch?v=', 'embed/');
+                            } else if (videoUrl.includes('youtu.be/')) {
+                                embedUrl = videoUrl.replace('youtu.be/', 'youtube.com/embed/');
+                            }
+
+                            videoPlayer.src = embedUrl;
+                            videoModal.classList.add('active');
+                            document.body.style.overflow = 'hidden';
+                        });
+                    }
+
+                    projectsContainer.appendChild(card);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching projects:', error);
+                projectsContainer.innerHTML = '<div class="error-message">Failed to load projects.</div>';
+            });
+    }
+
+    /**
      * Image Lightbox Modal Logic
      */
     const imageModal = document.getElementById('imageModal');

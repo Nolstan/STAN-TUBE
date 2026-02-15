@@ -19,8 +19,10 @@ app.use(express.static(path.join(__dirname)));
 // API Routes
 const academicRoutes = require('./routes/academicRoutes');
 const authRoutes = require('./routes/authRoutes');
+const projectRoutes = require('./routes/projectRoutes');
 app.use('/api/academic', academicRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/projects', projectRoutes);
 
 const PORT = process.env.PORT || 5000;
 
