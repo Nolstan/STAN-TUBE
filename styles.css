@@ -1,0 +1,535 @@
+/* Global Styles */
+:root {
+    --bg-color: #141414;
+    --text-color: #e5e5e5;
+    --primary-color: #E50914;
+    /* Netflix Red-ish */
+    --hover-color: #1f1f1f;
+    --card-bg: #181818;
+    --nav-bg: rgba(20, 20, 20, 0.9);
+    --nav-scroll-bg: #141414;
+    --font-main: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-main);
+    line-height: 1.6;
+    overflow-x: hidden;
+    /* Prevent horizontal scroll on body */
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Navigation Bar */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 68px;
+    /* Standard Netflix height */
+    padding: 0 4%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 1000;
+    transition: background-color 0.3s ease;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 10%, rgba(0, 0, 0, 0));
+}
+
+.navbar.scrolled {
+    background-color: var(--nav-scroll-bg);
+}
+
+.logo-text {
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    margin-left: 40px;
+    flex-grow: 1;
+    /* Push user profile to the right */
+}
+
+.nav-links li a {
+    color: #e5e5e5;
+    font-size: 0.9rem;
+    transition: color 0.3s;
+}
+
+.nav-links li a:hover,
+.nav-links li a.active {
+    color: #b3b3b3;
+    font-weight: 500;
+}
+
+.user-profile .avatar {
+    width: 32px;
+    height: 32px;
+    background-color: #333;
+    border-radius: 4px;
+    background-image: url('https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png');
+    /* Placeholder */
+    background-size: cover;
+    cursor: pointer;
+}
+
+/* Hero Section */
+.hero {
+    position: relative;
+    height: 85vh;
+    /* Standard feature height */
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 4%;
+}
+
+.hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background-image: url('https://images.unsplash.com/photo-1555099962-4199c345e5dd?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+    /* Coding/Tech background */
+    background-size: cover;
+    background-position: center;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, #141414 10%, transparent 90%),
+        linear-gradient(to right, #141414 20%, transparent 60%);
+}
+
+.hero-content {
+    max-width: 600px;
+    padding-top: 80px;
+    /* Offset for navbar */
+    animation: fadeUp 1s ease-out;
+}
+
+.hero-tag {
+    display: inline-block;
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+    line-height: 1.1;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.hero-description {
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    color: #fff;
+    max-width: 500px;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0.6rem 1.4rem;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+    border: none;
+}
+
+.btn-primary {
+    background-color: white;
+    color: black;
+}
+
+.btn-primary:hover {
+    background-color: rgba(255, 255, 255, 0.75);
+}
+
+.btn-secondary {
+    background-color: rgba(109, 109, 110, 0.7);
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: rgba(109, 109, 110, 0.4);
+}
+
+/* Sections */
+.content-section {
+    padding: 30px 0;
+    padding-left: 4%;
+    /* Align with navbar/hero */
+    position: relative;
+    z-index: 10;
+    margin-bottom: 20px;
+}
+
+.section-title {
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+    font-weight: 600;
+    color: #e5e5e5;
+    /* Optional: Show title on hover or always? Always is better for UX */
+}
+
+/* Section Filters */
+.section-filters {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    overflow-x: auto;
+    padding-bottom: 5px;
+    /* For potential scrollbar space */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.section-filters::-webkit-scrollbar {
+    display: none;
+}
+
+.filter-pill {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #e5e5e5;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
+
+.filter-pill:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.filter-pill.active {
+    background-color: #e5e5e5;
+    color: #141414;
+    border-color: #e5e5e5;
+    font-weight: 600;
+}
+
+/* Card Container for Horizontal Scroll */
+.card-container-wrapper {
+    position: relative;
+}
+
+.card-container {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 40px;
+    /* Space for hover expansion */
+    padding-top: 10px;
+    /* Space for hover expansion */
+    scroll-behavior: smooth;
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+.card-container::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari and Opera */
+}
+
+/* Cards */
+.card {
+    flex: 0 0 250px;
+    /* Fixed width cards */
+    background-color: var(--card-bg);
+    border-radius: 4px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, z-index 0s 0.1s;
+    /* Delay z-index reset */
+    cursor: pointer;
+    position: relative;
+    /* Aspect ratio for standard cards */
+}
+
+/* Hover Effects */
+.card:hover {
+    transform: scale(1.15);
+    /* Scale up */
+    z-index: 99;
+    /* Bring to front */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    transition-delay: 0.2s;
+    /* Small delay before popping to avoid flicker on fast scroll */
+}
+
+.video-card {
+    flex: 0 0 300px;
+    /* Slightly wider for video/projects */
+}
+
+.card-image-placeholder {
+    width: 100%;
+    height: 140px;
+    /* 16:9 approx ratio for 250px width */
+    background-color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+}
+
+/* Placeholder Gradients */
+.academic-bg-1 {
+    background: linear-gradient(45deg, #1a237e, #283593);
+}
+
+.academic-bg-2 {
+    background: linear-gradient(45deg, #004d40, #00695c);
+}
+
+.academic-bg-3 {
+    background: linear-gradient(45deg, #311b92, #4527a0);
+}
+
+.project-bg-1 {
+    background-image: url('https://images.unsplash.com/photo-1592210454359-9043f067919b?auto=format&fit=crop&w=500&q=60');
+}
+
+/* Mobile App */
+.project-bg-2 {
+    background-image: url('https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?auto=format&fit=crop&w=500&q=60');
+}
+
+/* Finance */
+.project-bg-3 {
+    background-image: url('https://images.unsplash.com/photo-1531746790731-6c087fecd65a?auto=format&fit=crop&w=500&q=60');
+}
+
+/* AI */
+
+
+.card-grade {
+    font-size: 2rem;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.8);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.play-icon {
+    opacity: 0;
+    transition: opacity 0.3s;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    padding: 10px;
+    display: flex;
+}
+
+.card:hover .play-icon {
+    opacity: 1;
+}
+
+/* Card Info (Hidden until hover usually, but let's make it visible but detailed on hover?) 
+   Netflix style: Image is visible, on hover it expands and shows info below.
+   Simpler approach: Info is below image always, or hidden. 
+   Let's go with: Info appears below image. On hover, the whole card grows.
+*/
+
+.card-info {
+    padding: 10px;
+    background-color: #181818;
+    /* display: none; */
+    /* Initially hidden? No, let's keep it visible for simplicity unless user wants pure Netflix hover */
+    opacity: 1;
+    transition: opacity 0.3s;
+    height: 160px;
+    /* Fixed height for info area */
+    display: flex;
+    flex-direction: column;
+}
+
+.card:hover .card-info {
+    background-color: #252525;
+}
+
+.card-info h3 {
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.meta-info {
+    display: flex;
+    gap: 10px;
+    font-size: 0.75rem;
+    color: #46d369;
+    /* Match score green */
+    font-weight: 600;
+    margin-bottom: 8px;
+    align-items: center;
+}
+
+.meta-info .year,
+.meta-info .rating,
+.meta-info .duration,
+.meta-info .quality {
+    color: #bcbcbc;
+    font-weight: 400;
+}
+
+.meta-info .quality {
+    border: 1px solid #bcbcbc;
+    padding: 0 4px;
+    border-radius: 2px;
+    font-size: 0.65rem;
+}
+
+.desc {
+    font-size: 0.8rem;
+    color: #999;
+    margin-bottom: 10px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    flex-grow: 1;
+}
+
+/* Progress Bar */
+.progress-bar-container {
+    width: 100%;
+    height: 4px;
+    background-color: #404040;
+    border-radius: 2px;
+    overflow: hidden;
+    margin-top: auto;
+}
+
+.progress-bar {
+    height: 100%;
+    background-color: var(--primary-color);
+}
+
+/* Action Buttons in Card */
+.card-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.action-btn {
+    background: transparent;
+    border: 1px solid #666;
+    color: white;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+}
+
+.action-btn:hover {
+    border-color: white;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Footer */
+.footer {
+    padding: 40px 4%;
+    margin-top: 60px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.social-links {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.social-links a {
+    text-decoration: underline;
+}
+
+.social-links a:hover {
+    color: #999;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+
+    .logo-text {
+        font-size: 1.2rem;
+    }
+
+    .nav-links {
+        display: none;
+        /* Mobile menu hidden for simple static site, or could implement hamburger */
+    }
+
+    /* Simple fallback for mobile nav: just show icons or hide */
+}
+
+/* Animations */
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
