@@ -513,7 +513,7 @@ a {
         font-size: 1.2rem;
     }
 
-    .nav-links {
+    .nav-links, .user-profile {
         display: none;
         /* Mobile menu hidden for simple static site, or could implement hamburger */
     }
