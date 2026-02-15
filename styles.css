@@ -90,6 +90,32 @@ a {
     cursor: pointer;
 }
 
+/* Buttons */
+.btn {
+    display: inline-block;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 4px;
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: opacity 0.2s, transform 0.1s;
+}
+
+.btn:hover {
+    opacity: 0.85;
+}
+
+.btn:active {
+    transform: scale(0.97);
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
 /* Hero Section */
 .hero {
     position: relative;
@@ -506,6 +532,10 @@ a {
 
 /* Responsive */
 @media (max-width: 768px) {
+    .navbar {
+        background-color: rgba(0, 0, 0, 0.95);
+    }
+
     .hero-title {
         font-size: 2.5rem;
     }
@@ -516,7 +546,11 @@ a {
 
     .nav-links {
         display: none;
-        /* Mobile menu hidden for simple static site, or could implement hamburger */
+    }
+
+    .user-profile .btn {
+        padding: 8px 18px;
+        font-size: 0.9rem;
     }
 
     /* Mobile: Enable horizontal scroll (swipe) behavior instead of wrapping */
