@@ -689,3 +689,96 @@ a {
     top: 20px;
     right: 30px;
 }
+
+/* Comment Modal Styles */
+.comment-modal-content {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    padding: 30px;
+}
+
+.comment-list {
+    max-height: 400px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+    padding-right: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.comment-item {
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 12px 16px;
+    border-radius: 4px;
+    border-left: 3px solid var(--primary-color);
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: var(--primary-color);
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.comment-date {
+    color: #888;
+    font-weight: 400;
+    font-size: 0.75rem;
+}
+
+.comment-text {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #efefef;
+}
+
+.comment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    border-top: 1px solid #333;
+    padding-top: 20px;
+}
+
+.comment-form .form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.comment-form input,
+.comment-form textarea {
+    background-color: #222;
+    border: 1px solid #444;
+    color: #fff;
+    padding: 12px;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 0.95rem;
+}
+
+.comment-form textarea {
+    height: 100px;
+    resize: none;
+}
+
+.comment-form .btn {
+    align-self: flex-end;
+    padding: 10px 25px;
+}
+
+.no-comments {
+    text-align: center;
+    color: #666;
+    padding: 20px;
+}
+
+.grade-pass {
+    color: #46d369;
+}
+
+.grade-fail {
+    color: #E50914;
+}

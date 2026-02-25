@@ -153,6 +153,13 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <span class="rating">${record.type}</span>
                             </div>
                             <p class="desc">${record.description || ''}</p>
+                            <div class="card-actions" style="margin-top: 0;">
+                                <button class="action-btn comment-btn" title="Comments" data-id="${record._id}" data-type="academic">
+                                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10z"/>
+                                    </svg>
+                                </button>
+                            </div>
                             <div class="progress-bar-container">
                                 <div class="progress-bar" style="width: ${record.grade}%;"></div>
                             </div>
@@ -278,6 +285,11 @@ document.addEventListener('DOMContentLoaded', () => {
                                         <path d="M8 5v14l11-7z" />
                                     </svg>
                                 </button>` : ''}
+                                <button class="action-btn comment-btn" title="Comments" data-id="${project._id}" data-type="projects">
+                                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10z"/>
+                                    </svg>
+                                </button>
                             </div>
                         </div>
                     `;
@@ -345,6 +357,114 @@ document.addEventListener('DOMContentLoaded', () => {
                 imageModal.classList.remove('active');
                 document.body.style.overflow = '';
             }
+        });
+    }
+
+    /**
+     * Comment System Logic
+     */
+    const commentModal = document.getElementById('commentModal');
+    const closeCommentBtn = document.getElementById('closeCommentModal');
+    const commentForm = document.getElementById('commentForm');
+    const commentList = document.getElementById('commentList');
+
+    if (closeCommentBtn) {
+        closeCommentBtn.addEventListener('click', () => {
+            commentModal.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+    }
+
+    // Handle opening comment modal (using event delegation for dynamic buttons)
+    document.addEventListener('click', (e) => {
+        const btn = e.target.closest('.comment-btn');
+        if (btn) {
+            e.stopPropagation();
+            const id = btn.getAttribute('data-id');
+            const type = btn.getAttribute('data-type');
+            openCommentModal(id, type);
+        }
+    });
+
+    function openCommentModal(id, type) {
+        document.getElementById('currentTargetId').value = id;
+        document.getElementById('currentTargetType').value = type;
+        document.getElementById('commentModalTitle').textContent = `Comments - ${type === 'academic' ? 'Academic Record' : 'Project'}`;
+
+        commentList.innerHTML = '<div class="loading-placeholder">Loading comments...</div>';
+        commentModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+
+        fetchComments(id, type);
+    }
+
+    function fetchComments(id, type) {
+        fetch(`${API_BASE_URL}/api/comments/${type}/${id}`)
+            .then(res => res.json())
+            .then(comments => {
+                renderComments(comments);
+            })
+            .catch(err => {
+                console.error('Error fetching comments:', err);
+                commentList.innerHTML = '<div class="error-message">Failed to load comments.</div>';
+            });
+    }
+
+    function renderComments(comments) {
+        if (!comments || comments.length === 0) {
+            commentList.innerHTML = '<div class="no-comments">No comments yet. Be the first to say something!</div>';
+            return;
+        }
+
+        commentList.innerHTML = comments.map(c => `
+            <div class="comment-item">
+                <div class="comment-header">
+                    <span class="comment-user">${c.username}</span>
+                    <span class="comment-date">${new Date(c.createdAt).toLocaleDateString()}</span>
+                </div>
+                <p class="comment-text">${c.comment}</p>
+            </div>
+        `).join('');
+    }
+
+    if (commentForm) {
+        commentForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const id = document.getElementById('currentTargetId').value;
+            const type = document.getElementById('currentTargetType').value;
+            const username = document.getElementById('commentUsername').value;
+            const comment = document.getElementById('commentText').value;
+
+            const payload = {
+                username,
+                comment
+            };
+
+            // Backend expectation: academicRecordId or projectId
+            if (type === 'academic') {
+                payload.academicRecordId = id;
+            } else {
+                payload.projectId = id;
+            }
+
+            fetch(`${API_BASE_URL}/api/comments/${type}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.comment) {
+                        document.getElementById('commentText').value = '';
+                        fetchComments(id, type); // Reload comments
+                    } else {
+                        alert(data.message || 'Error posting comment');
+                    }
+                })
+                .catch(err => {
+                    console.error('Error posting comment:', err);
+                    alert('An error occurred. Check console.');
+                });
         });
     }
 });
