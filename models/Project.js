@@ -35,6 +35,9 @@ const projectSchema = new mongoose.Schema({
     imageUrl: {
         type: String,
         trim: true
+    },
+    cloudinaryId: {
+        type: String
     }
 }, { timestamps: true });
 

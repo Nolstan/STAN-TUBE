@@ -6,9 +6,11 @@ exports.createProject = async (req, res) => {
     try {
         const { title, duration, quality, category, videoUrl, codeUrl, description } = req.body;
         let imageUrl = '';
+        let cloudinaryId = '';
 
         if (req.file) {
             imageUrl = req.file.path; // Cloudinary URL
+            cloudinaryId = req.file.filename;
         }
 
         const project = new Project({
@@ -19,7 +21,8 @@ exports.createProject = async (req, res) => {
             videoUrl,
             codeUrl,
             description,
-            imageUrl
+            imageUrl,
+            cloudinaryId
         });
 
         await project.save();

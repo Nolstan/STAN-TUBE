@@ -24,9 +24,13 @@
             </div>
             <nav class="sidebar-nav">
                 <ul>
-                    <li><a href="#" class="active" data-target="academic">Academic Records</a></li>
-                    <li><a href="#" data-target="projects">Projects</a></li>
-                    <li><a href="index.html" class="back-link">Back to Site</a></li>
+                    <li class="nav-category">Academic</li>
+                    <li><a href="#" class="active" data-target="academic-add">Add Record</a></li>
+                    <li><a href="#" data-target="academic-manage">Manage Records</a></li>
+                    <li class="nav-category" style="margin-top: 15px;">Projects</li>
+                    <li><a href="#" data-target="projects-add">Add Project</a></li>
+                    <li><a href="#" data-target="projects-manage">Manage Projects</a></li>
+                    <li style="margin-top: 30px;"><a href="index.html" class="back-link">Back to Site</a></li>
                 </ul>
             </nav>
         </aside>
@@ -41,11 +45,12 @@
                 </div>
             </header>
 
-            <!-- Academic Form Section -->
-            <section id="academic-section" class="form-section active">
+            <!-- Academic Add Section -->
+            <section id="academic-add-section" class="form-section active">
                 <div class="form-container">
-                    <h2>Add New Record</h2>
+                    <h2 id="academic-form-title">Add New Record</h2>
                     <form id="academic-form">
+                        <input type="hidden" id="academic-id">
                         <div class="form-group">
                             <label for="grade-paper">Picture of Paper / Grade Sheet</label>
                             <input type="file" id="grade-paper" accept="image/*">
@@ -83,16 +88,40 @@
                             <label for="description">Description</label>
                             <textarea id="description" rows="3" placeholder="Brief description..."></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary">Add Record</button>
+                        <button type="submit" id="academic-submit-btn" class="btn btn-primary">Add Record</button>
                     </form>
                 </div>
             </section>
 
-            <!-- Project Form Section -->
-            <section id="projects-section" class="form-section">
+            <!-- Academic Manage Section -->
+            <section id="academic-manage-section" class="form-section">
+                <div class="records-management">
+                    <h2>Manage Academic Records</h2>
+                    <div class="table-container">
+                        <table id="academic-table">
+                            <thead>
+                                <tr>
+                                    <th>Subject</th>
+                                    <th>Grade</th>
+                                    <th>Type</th>
+                                    <th>Year</th>
+                                    <th class="actions-col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="academic-list">
+                                <!-- Records will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Project Add Section -->
+            <section id="projects-add-section" class="form-section">
                 <div class="form-container">
-                    <h2>Add New Project</h2>
+                    <h2 id="project-form-title">Add New Project</h2>
                     <form id="project-form">
+                        <input type="hidden" id="project-id">
                         <div class="form-group">
                             <label for="project-image">Project Image / Thumbnail</label>
                             <input type="file" id="project-image" accept="image/*">
@@ -134,8 +163,30 @@
                             <label for="project-desc">Description</label>
                             <textarea id="project-desc" rows="3" placeholder="Project details..."></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary">Add Project</button>
+                        <button type="submit" id="project-submit-btn" class="btn btn-primary">Add Project</button>
                     </form>
+                </div>
+            </section>
+
+            <!-- Project Manage Section -->
+            <section id="projects-manage-section" class="form-section">
+                <div class="records-management">
+                    <h2>Manage Projects</h2>
+                    <div class="table-container">
+                        <table id="project-table">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Category</th>
+                                    <th>Quality</th>
+                                    <th class="actions-col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="project-list">
+                                <!-- Projects will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </section>
 

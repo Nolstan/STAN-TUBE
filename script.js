@@ -34,33 +34,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Optional: Add some dynamic "shimmer" or loading effect if needed later
-    console.log("Streaming Portfolio Loaded Successfully");
-
     /**
      * Video Modal Logic
      */
     const modal = document.getElementById('videoModal');
     const closeBtn = document.getElementById('closeModal');
     const videoPlayer = document.getElementById('videoPlayer');
-
-    // Placeholder Video URL (Rick Roll for demo safety/humor, or a generic nature loop)
-    // Using a generic landscape video from Pixabay or similar would be better, but YouTube embed is standard.
-    // Let's use a nice "Nature" placeholder or a Tech abstract one.
-    const demoVideoUrl = "https://www.youtube.com/embed/LXb3EKWsInQ?autoplay=1"; // 4K Nature
-
-    // Open Modal
-    document.querySelectorAll('.btn-primary, .action-btn[title="Watch Demo"]').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            // Check if it's the specific "Watch Demo" buttons
-            if (btn.textContent.includes('Watch Demo') || btn.getAttribute('title') === 'Watch Demo') {
-                e.preventDefault();
-                modal.classList.add('active');
-                videoPlayer.src = demoVideoUrl;
-                document.body.style.overflow = 'hidden'; // Prevent scrolling
-            }
-        });
-    });
 
     // Close Modal
     function closeModal() {
@@ -216,6 +195,39 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
 
+                // Update Hero Section with the Latest Project
+                const latestProject = projects[0];
+                const heroTitle = document.getElementById('hero-title');
+                const heroDesc = document.getElementById('hero-description');
+                const heroWatchDemo = document.getElementById('hero-watch-demo');
+                const heroViewCode = document.getElementById('hero-view-code');
+
+                if (heroTitle) heroTitle.textContent = latestProject.title;
+                if (heroDesc) heroDesc.textContent = latestProject.description || '';
+
+                if (heroWatchDemo) {
+                    if (latestProject.videoUrl) {
+                        heroWatchDemo.style.display = 'inline-flex';
+                        heroWatchDemo.setAttribute('data-video', latestProject.videoUrl);
+                        // Add click event for hero watch demo (since it's dynamic now or needs to hook into modal)
+                        heroWatchDemo.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            openVideoModal(latestProject.videoUrl);
+                        });
+                    } else {
+                        heroWatchDemo.style.display = 'none';
+                    }
+                }
+
+                if (heroViewCode) {
+                    if (latestProject.codeUrl) {
+                        heroViewCode.style.display = 'inline-flex';
+                        heroViewCode.href = latestProject.codeUrl;
+                    } else {
+                        heroViewCode.style.display = 'none';
+                    }
+                }
+
                 projects.forEach(project => {
                     const card = document.createElement('div');
                     card.classList.add('card', 'video-card');
@@ -276,20 +288,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         demoBtn.addEventListener('click', (e) => {
                             e.stopPropagation();
                             const videoUrl = demoBtn.getAttribute('data-video');
-                            const videoModal = document.getElementById('videoModal');
-                            const videoPlayer = document.getElementById('videoPlayer');
-
-                            // Handle YouTube links conversion to embed if necessary
-                            let embedUrl = videoUrl;
-                            if (videoUrl.includes('youtube.com/watch?v=')) {
-                                embedUrl = videoUrl.replace('watch?v=', 'embed/');
-                            } else if (videoUrl.includes('youtu.be/')) {
-                                embedUrl = videoUrl.replace('youtu.be/', 'youtube.com/embed/');
-                            }
-
-                            videoPlayer.src = embedUrl;
-                            videoModal.classList.add('active');
-                            document.body.style.overflow = 'hidden';
+                            openVideoModal(videoUrl);
                         });
                     }
 
@@ -300,6 +299,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.error('Error fetching projects:', error);
                 projectsContainer.innerHTML = '<div class="error-message">Failed to load projects.</div>';
             });
+    }
+
+    /**
+     * Helper function to open video modal
+     */
+    function openVideoModal(videoUrl) {
+        const videoModal = document.getElementById('videoModal');
+        const videoPlayer = document.getElementById('videoPlayer');
+
+        // Handle YouTube links conversion to embed if necessary
+        let embedUrl = videoUrl;
+        if (videoUrl.includes('youtube.com/watch?v=')) {
+            embedUrl = videoUrl.replace('watch?v=', 'embed/');
+        } else if (videoUrl.includes('youtu.be/')) {
+            embedUrl = videoUrl.replace('youtu.be/', 'youtube.com/embed/');
+        }
+
+        // Add autoplay if not already there
+        if (!embedUrl.includes('autoplay=1')) {
+            embedUrl += (embedUrl.includes('?') ? '&' : '?') + 'autoplay=1';
+        }
+
+        videoPlayer.src = embedUrl;
+        videoModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
     }
 
     /**

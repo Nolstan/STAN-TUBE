@@ -235,3 +235,37 @@ button[type="submit"] {
     align-items: center;
     gap: 12px;
 }
+
+.nav-category {
+    padding: 10px 20px 5px;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: #666;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.table-container {
+    background-color: var(--card-bg, #181818);
+    border-radius: 8px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+}
+
+th,
+td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.actions-col {
+    width: 150px;
+    white-space: nowrap;
+}

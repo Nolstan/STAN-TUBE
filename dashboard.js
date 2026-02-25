@@ -51,21 +51,159 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // Update Header Title
-            if (targetId === 'academic') {
-                sectionTitle.textContent = 'Academic Records';
-            } else if (targetId === 'projects') {
-                sectionTitle.textContent = 'Projects';
-            }
+            const titleMap = {
+                'academic-add': 'Add Academic Record',
+                'academic-manage': 'Manage Academic Records',
+                'projects-add': 'Add Project',
+                'projects-manage': 'Manage Projects'
+            };
+            sectionTitle.textContent = titleMap[targetId] || 'Dashboard';
         });
     });
 
-    // Form Submission Logic (Placeholder)
+    // --- Records Management Logic ---
+
+    // Fetch and render academic records
+    function loadAcademicRecords() {
+        fetch(`${API_BASE_URL}/api/academic`)
+            .then(response => response.json())
+            .then(records => {
+                const list = document.getElementById('academic-list');
+                if (!list) return;
+                list.innerHTML = '';
+                records.forEach(record => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${record.subject}</td>
+                        <td>${record.grade}%</td>
+                        <td>${record.type}</td>
+                        <td>${record.year}</td>
+                        <td>
+                            <button class="btn-edit" onclick="editAcademic('${record._id}')">Edit</button>
+                            <button class="btn-delete" onclick="deleteAcademic('${record._id}')">Delete</button>
+                        </td>
+                    `;
+                    list.appendChild(tr);
+                });
+            })
+            .catch(err => console.error('Error loading academic records:', err));
+    }
+
+    // Fetch and render projects
+    function loadProjects() {
+        fetch(`${API_BASE_URL}/api/projects`)
+            .then(response => response.json())
+            .then(projects => {
+                const list = document.getElementById('project-list');
+                if (!list) return;
+                list.innerHTML = '';
+                projects.forEach(project => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${project.title}</td>
+                        <td>${project.category}</td>
+                        <td>${project.quality}</td>
+                        <td>
+                            <button class="btn-edit" onclick="editProject('${project._id}')">Edit</button>
+                            <button class="btn-delete" onclick="deleteProject('${project._id}')">Delete</button>
+                        </td>
+                    `;
+                    list.appendChild(tr);
+                });
+            })
+            .catch(err => console.error('Error loading projects:', err));
+    }
+
+    // Initial Load
+    loadAcademicRecords();
+    loadProjects();
+
+    // Expose edit/delete to window for onclick handlers
+    window.editAcademic = (id) => {
+        fetch(`${API_BASE_URL}/api/academic`)
+            .then(res => res.json())
+            .then(records => {
+                const record = records.find(r => r._id === id);
+                if (record) {
+                    // Switch to Add section
+                    document.querySelector('[data-target="academic-add"]').click();
+
+                    document.getElementById('academic-id').value = record._id;
+                    document.getElementById('subject').value = record.subject;
+                    document.getElementById('grade').value = record.grade;
+                    document.getElementById('match').value = record.matchScore;
+                    document.getElementById('year').value = record.year;
+                    document.getElementById('type').value = record.type;
+                    document.getElementById('description').value = record.description || '';
+                    document.getElementById('academic-form-title').textContent = 'Edit Academic Record';
+                    document.getElementById('academic-submit-btn').textContent = 'Update Record';
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            });
+    };
+
+    window.deleteAcademic = (id) => {
+        if (confirm('Are you sure you want to delete this record?')) {
+            fetch(`${API_BASE_URL}/api/academic/${id}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${token}` }
+            })
+                .then(res => res.json())
+                .then(data => {
+                    alert(data.message);
+                    loadAcademicRecords();
+                })
+                .catch(err => console.error('Delete error:', err));
+        }
+    };
+
+    window.editProject = (id) => {
+        fetch(`${API_BASE_URL}/api/projects`)
+            .then(res => res.json())
+            .then(projects => {
+                const project = projects.find(p => p._id === id);
+                if (project) {
+                    // Switch to Add section
+                    document.querySelector('[data-target="projects-add"]').click();
+
+                    document.getElementById('project-id').value = project._id;
+                    document.getElementById('project-title').value = project.title;
+                    document.getElementById('duration').value = project.duration || '';
+                    document.getElementById('quality').value = project.quality;
+                    document.getElementById('category').value = project.category;
+                    document.getElementById('video-url').value = project.videoUrl || '';
+                    document.getElementById('code-url').value = project.codeUrl || '';
+                    document.getElementById('project-desc').value = project.description || '';
+                    document.getElementById('project-form-title').textContent = 'Edit Project';
+                    document.getElementById('project-submit-btn').textContent = 'Update Project';
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            });
+    };
+
+    window.deleteProject = (id) => {
+        if (confirm('Are you sure you want to delete this project?')) {
+            fetch(`${API_BASE_URL}/api/projects/${id}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${token}` }
+            })
+                .then(res => res.json())
+                .then(data => {
+                    alert(data.message);
+                    loadProjects();
+                })
+                .catch(err => console.error('Delete error:', err));
+        }
+    };
+
+    // --- Form Submission Logic ---
     const academicForm = document.getElementById('academic-form');
     const projectForm = document.getElementById('project-form');
 
     if (academicForm) {
         academicForm.addEventListener('submit', (e) => {
             e.preventDefault();
+            const id = document.getElementById('academic-id').value;
             const formData = new FormData();
             formData.append('subject', document.getElementById('subject').value);
             formData.append('grade', document.getElementById('grade').value);
@@ -77,25 +215,30 @@ document.addEventListener('DOMContentLoaded', () => {
             const fileInput = document.getElementById('grade-paper');
             if (fileInput.files.length > 0) {
                 formData.append('image', fileInput.files[0]);
-            } else {
+            } else if (!id) {
                 alert('Please select a grade paper image.');
                 return;
             }
 
-            fetch(`${API_BASE_URL}/api/academic/create`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                },
+            const url = id ? `${API_BASE_URL}/api/academic/${id}` : `${API_BASE_URL}/api/academic/create`;
+            const method = id ? 'PUT' : 'POST';
+
+            fetch(url, {
+                method: method,
+                headers: { 'Authorization': `Bearer ${token}` },
                 body: formData
             })
                 .then(response => response.json())
                 .then(data => {
-                    if (data.message === 'Academic Record created successfully') {
-                        alert('Academic Record Added Successfully!');
+                    alert(data.message);
+                    if (data.message.includes('successfully')) {
                         academicForm.reset();
-                    } else {
-                        alert(`Error: ${data.message}`);
+                        document.getElementById('academic-id').value = '';
+                        document.getElementById('academic-form-title').textContent = 'Add New Record';
+                        document.getElementById('academic-submit-btn').textContent = 'Add Record';
+                        loadAcademicRecords();
+                        // Optional: switch back to manage view
+                        document.querySelector('[data-target="academic-manage"]').click();
                     }
                 })
                 .catch(err => {
@@ -108,6 +251,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (projectForm) {
         projectForm.addEventListener('submit', (e) => {
             e.preventDefault();
+            const id = document.getElementById('project-id').value;
             const formData = new FormData();
             formData.append('title', document.getElementById('project-title').value);
             formData.append('duration', document.getElementById('duration').value);
@@ -122,20 +266,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 formData.append('project-image', projectImage.files[0]);
             }
 
-            fetch(`${API_BASE_URL}/api/projects/create`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                },
+            const url = id ? `${API_BASE_URL}/api/projects/${id}` : `${API_BASE_URL}/api/projects/create`;
+            const method = id ? 'PUT' : 'POST';
+
+            fetch(url, {
+                method: method,
+                headers: { 'Authorization': `Bearer ${token}` },
                 body: formData
             })
                 .then(response => response.json())
                 .then(data => {
-                    if (data.message === 'Project created successfully') {
-                        alert('Project Added Successfully!');
+                    alert(data.message);
+                    if (data.message.includes('successfully')) {
                         projectForm.reset();
-                    } else {
-                        alert(`Error: ${data.message}`);
+                        document.getElementById('project-id').value = '';
+                        document.getElementById('project-form-title').textContent = 'Add New Project';
+                        document.getElementById('project-submit-btn').textContent = 'Add Project';
+                        loadProjects();
+                        // Optional: switch back to manage view
+                        document.querySelector('[data-target="projects-manage"]').click();
                     }
                 })
                 .catch(err => {
